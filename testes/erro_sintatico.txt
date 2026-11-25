@@ -1,0 +1,7 @@
+module
+i_lado, i_i
+{
+ out ("digite um valor para lado: ")
+ in i_lado)
+ out ("o valor digitado foi: ", i_lado)
+}

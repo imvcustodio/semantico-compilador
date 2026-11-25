@@ -1,0 +1,13 @@
+COMPILADOR - PARTE 4 (analisador semantico e gerador de codigo IL)
+
+Executar:   java -jar Compilador.jar
+Compilar:   javac -encoding UTF-8 -d out src/main/java/compilador/*.java
+Fonte GALS: BNF_t03-01.gals (unico .gals; contem a numeracao das acoes #101 a #134)
+
+Como usar: abra/salve o programa (.txt) e clique em compilar. Se estiver correto,
+e gerado NA MESMA PASTA o arquivo .il com o mesmo nome (teste01.txt -> teste01.il).
+Para executar o IL (Windows): ilasm teste01.il  e depois  teste01.exe
+
+Arquivos gerados pelo GALS (nao editar a mao): Constants, ScannerConstants, ParserConstants.
+Editados pela equipe: Lexico, Sintatico (ajustes de posicao/erro), Semantico, CompiladorGUI.
+Pasta testes/: programas de exemplo.

@@ -1,0 +1,200 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+Package = compilador
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = String
+Parser = LL
+#RegularDefinitions
+mai: [A-Z]
+min: [a-z]
+letra: {mai} | {min}
+dig: [0-9]
+
+bloco: "!" \" [^"!" \" "?"]* \" "?"
+#Tokens
+
+pr:! {min} ({mai}? {min})*
+
+// símbolos especiais
+","
+
+
+"["
+"]"
+"("
+")"
+"{"
+"}"
+"+"
+"-"
+"*"
+"/"
+"<-"
+"="
+"<>"
+"<"
+">"
+
+and = pr: "and"
+false = pr: "false"
+if = pr: "if"
+in = pr: "in"
+isFalseDo = pr: "isFalseDo"
+isTrueDo = pr: "isTrueDo"
+module = pr: "module"
+not = pr: "not"
+or = pr: "or"
+out = pr: "out"
+true = pr: "true"
+while = pr: "while"
+
+
+
+// caracteres de formatação
+:[\n\s\t]
+
+:! {bloco}
+
+identificador_int:! "i" "_" {letra} ({letra} | {dig})*
+identificador_float:! "f" "_" {letra} ({letra} | {dig})*
+identificador_str:! "s" "_" {letra} ({letra} | {dig})*
+identificador_bol:! "b" "_" {letra} ({letra} | {dig})*
+constante_int:! {dig}+
+constante_float:! {dig}+ "," {dig}+
+constante_string:! \" [^\n \" \\]* \"
+#NonTerminals
+
+<forma_geral>
+
+<lista_variaveis>
+<lista_variaveis1>
+<lista_variaveis2>
+
+<comando>
+<lista_comandos>
+<lista_comandos1>
+
+<identificador>
+<expressao>
+
+<lista_identificadores>
+<lista_identificadores1>
+<lista_identificadores2>
+
+<declaracao_variaveis>
+
+<forma_comando>
+<forma_comando1>
+
+<forma_comando_entrada> 
+<forma_comando_saida>
+
+<lista_expressoes>
+<lista_expressoes1>
+
+<forma_comando_selecao>
+<forma_comando_selecao1>
+<forma_comando_selecao2>
+<forma_comando_selecao3>
+
+<forma_comando_repeticao>
+<forma_comando_repeticao1>
+
+<expressao_>
+<termo_logico>
+<relacional>
+<relacional_>
+<aritmetica>
+<operador_relacional>
+<termo_aritmetico>
+<aritmetica_>
+<fator>
+<termo_aritmetico_>
+<identificador_expressao> 
+<vetor>
+
+#Grammar
+<forma_geral> ::= module #101 <declaracao_variaveis> "{" <lista_comandos> "}" #102 ;
+
+<declaracao_variaveis> ::= <lista_variaveis> | î ;
+
+
+<lista_variaveis> ::= <identificador> #103 <lista_variaveis1> ;
+<lista_variaveis1> ::= #104 î |  "[" constante_int #105 "]" <lista_variaveis2> |#104 "," <lista_variaveis> ;
+<lista_variaveis2> ::= î | "," <lista_variaveis> ;
+
+
+
+<lista_comandos> ::= <comando> <lista_comandos1> ;
+<lista_comandos1> ::= î | <lista_comandos> ;
+
+<identificador> ::= identificador_int | identificador_float | identificador_str | identificador_bol ;
+
+//<forma_comando> ::= <identificador> "<-" <expressao> | <identificador> "[" <expressao> "]" "<-" <expressao> ;
+<forma_comando> ::= <identificador> #103 <forma_comando1> ;
+<forma_comando1> ::= "<-" <expressao> #106 | #107 "[" <expressao> "]" #134  "<-" <expressao> #106 ;
+
+
+
+<forma_comando_entrada> ::= in "(" <lista_identificadores> ")" ;
+
+//<lista_identificadores> ::= <identificador> "," <lista_identificadores> | <identificador> "[" <expressao> "]" "," <lista_identificadores> | <identificador> | <identificador> "[" <expressao> "]" ;
+<lista_identificadores> ::= <identificador> #103 <lista_identificadores1>  ;
+<lista_identificadores1> ::= #108 î |#108 "," <lista_identificadores> |#107 "[" <expressao> "]" #134 #108 <lista_identificadores2> ;
+<lista_identificadores2> ::= î | "," <lista_identificadores> ;
+
+
+
+<forma_comando_saida> ::= out "(" <lista_expressoes> ")" ;
+
+//<lista_expressoes> ::= <expressao> | <expressao> "," <lista_expressoes> ; 
+<lista_expressoes> ::= <expressao> #109 <lista_expressoes1> ;
+<lista_expressoes1> ::= î | "," <lista_expressoes> ;
+
+
+
+//<forma_comando_selecao> ::= if "(" <expressao> ")" isTrueDo "{" <lista_comandos> "}" isFalseDo "{" <lista_comandos> "}" | if "(" <expressao> ")" isTrueDo "{" <lista_comandos> "}" | if "(" <expressao> ")" isFalseDo "{" <lista_comandos> "}"  isTrueDo "{" <lista_comandos> "}" | if "(" <expressao> ")" isFalseDo "{" <lista_comandos> "}" ;
+
+<forma_comando_selecao> ::= if "(" <expressao> ")" <forma_comando_selecao1>;
+<forma_comando_selecao1> ::=  isTrueDo #110 "{" <lista_comandos> "}" <forma_comando_selecao2> #111 | isFalseDo #110 "{" <lista_comandos> "}"  <forma_comando_selecao3> #111;
+<forma_comando_selecao2> ::=  î |  isFalseDo #112 "{" <lista_comandos> "}";
+<forma_comando_selecao3> ::=  î |  isTrueDo #112 "{" <lista_comandos> "}"; 
+
+
+
+
+//<forma_comando_repeticao> ::= while "(" <expressao> ")" isTrueDo "{" <lista_comandos> "}" | while "(" <expressao> ")" isFalseDo "{" <lista_comandos> "}" ;
+<forma_comando_repeticao> ::= #113 while "(" <expressao> ")" <forma_comando_repeticao1>;
+<forma_comando_repeticao1> ::= isTrueDo #114 "{" <lista_comandos> "}" #115 |  isFalseDo #114 "{" <lista_comandos> "}" #115;
+
+
+<comando> ::= <forma_comando> | <forma_comando_entrada>  | <forma_comando_saida> |<forma_comando_selecao> |<forma_comando_repeticao> ;
+
+
+
+<expressao> ::= <termo_logico> <expressao_> ;
+<expressao_> ::= î | and <termo_logico> #116 <expressao_> | or <termo_logico> #117 <expressao_> ;
+<termo_logico> ::= <relacional> | true #118 | false #119 | not <termo_logico> #120 ;
+<relacional> ::= <aritmetica> <relacional_> ;
+<relacional_> ::= î | <operador_relacional> #121 <aritmetica> #122 ;
+<operador_relacional>::= "=" | "<>" | "<" | ">" ;
+<aritmetica> ::= <termo_aritmetico> <aritmetica_> ;
+<aritmetica_> ::= î | "+" <termo_aritmetico> #123 <aritmetica_> |
+ "-" <termo_aritmetico> #124 <aritmetica_> ;
+<termo_aritmetico> ::= <fator> <termo_aritmetico_> ;
+<termo_aritmetico_> ::= î | "*" <fator> #125 <termo_aritmetico_> | "/" <fator> #126 <termo_aritmetico_> ;
+<fator> ::= <identificador_expressao> #127 <vetor> |
+ constante_int #128 |
+ constante_float #129 |
+ constante_string #130 |
+ "(" <expressao> ")" |
+ "+" <fator> #131 |
+ "-" <fator> #132 ;
+<identificador_expressao>::= identificador_int | identificador_float | identificador_str | identificador_bol;
+<vetor> ::= î | "[" <expressao> "]" #133 ; 

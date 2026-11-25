@@ -1,0 +1,12 @@
+module
+i_v[5], f_w[3], s_t[2], b_f[2], i_k, i_q
+{
+ i_k <- 0
+ while (i_k < 5) isTrueDo { i_v[i_k] <- i_k * i_k  i_k <- i_k + 1 }
+ f_w[1] <- 1,5
+ s_t[0] <- "ola"
+ b_f[1] <- true
+ in (i_v[4], i_q)
+ i_v[i_v[1] + 1] <- i_q
+ out (i_v[0], " ", i_v[1], " ", i_v[2], " ", i_v[3], " ", i_v[4], " ", f_w[1] * 2 , " ", s_t[0], " ", b_f[1], " ", b_f[0])
+}

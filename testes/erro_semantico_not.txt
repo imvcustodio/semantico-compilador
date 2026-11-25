@@ -1,0 +1,6 @@
+module
+i_a
+{
+ i_a <- 1
+ out (not i_a)
+}

@@ -1,0 +1,12 @@
+module
+i_a, i_b, f_x, f_y
+{
+ i_a <- 7
+ i_b <- 2
+ f_x <- 2,5
+ f_y <- i_a / i_b
+ out (i_a + i_b, " ", i_a - i_b, " ", i_a * i_b, " ", f_y, " ", f_x * 2 , " ", -i_a, " ", +i_b, " ", f_x + i_a)
+ f_x <- i_a
+ i_a <- -(3 + 4) * 2
+ out (" ", f_x, " ", i_a)
+}

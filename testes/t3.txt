@@ -1,0 +1,10 @@
+module
+i_n, b_ok
+{
+ in (i_n)
+ if (i_n > 10) isTrueDo { out ("grande") } isFalseDo { out ("pequeno") }
+ if (i_n = 5) isTrueDo { out (" cinco") }
+ if (i_n <> 5) isFalseDo { out (" eh5") } isTrueDo { out (" naoe5") }
+ b_ok <- not (i_n < 3) and i_n < 100 or false
+ out (" ", b_ok)
+}

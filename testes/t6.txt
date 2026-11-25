@@ -1,0 +1,11 @@
+module
+s_a, s_b, b_r
+{
+ in (s_a, s_b)
+ if (s_a = s_b) isTrueDo { out ("iguais ") } isFalseDo { out ("diferentes ") }
+ if (s_a < s_b) isTrueDo { out ("menor ") }
+ if (s_a > s_b) isTrueDo { out ("maior ") }
+ if (s_a <> "x") isTrueDo { out ("naoX ") }
+ b_r <- true and false or true
+ out (b_r, " ", not b_r)
+}
